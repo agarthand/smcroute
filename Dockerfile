@@ -13,4 +13,4 @@ RUN make && make install
 
 EXPOSE 2262/udp
 
-ENTRYPOINT ["smcroute", "-d", "-f", "/etc/smcroute.conf"]
+ENTRYPOINT ["smcroute", "-d", "-f", "/etc/smc/smcroute.conf"]
