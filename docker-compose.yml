@@ -11,3 +11,7 @@ services:
     cap_add:
       - NET_ADMIN
     tty: true
+
+volumes:
+  smcroute: 
+    external: true
