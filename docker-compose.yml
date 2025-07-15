@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  smcroute:
+    image: smcroute-custom:latest
+    container_name: smcroute
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - smcroute:/etc/smc/smcroute.conf:ro
+    cap_add:
+      - NET_ADMIN
+    tty: true
