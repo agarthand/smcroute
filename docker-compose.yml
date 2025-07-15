@@ -3,7 +3,7 @@ version: "3.8"
 services:
   smcroute:
     build:
-      context: ./smcroute-docker 
+      context: . 
     container_name: smcroute
     restart: unless-stopped
     network_mode: "host"
