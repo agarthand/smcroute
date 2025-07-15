@@ -1,16 +1,29 @@
-FROM debian:bullseye-slim
+# Dockerfile für smcroute basierend auf Debian slim
 
+FROM debian:bookworm-slim
+
+# Installiere alle nötigen Build-Tools und Abhängigkeiten
 RUN apt-get update && apt-get install -y \
     build-essential \
-    libnl-3-dev libnl-genl-3-dev libnl-route-3-dev \
+    git \
+    autoconf \
+    automake \
+    libtool \
+    pkg-config \
     iproute2 \
+    iputils-ping \
     && rm -rf /var/lib/apt/lists/*
 
-COPY . /smcroute
+# Hole den aktuellen Quellcode von smcroute
+RUN git clone https://github.com/troglobit/smcroute.git /smcroute
+
 WORKDIR /smcroute
 
-RUN make && make install
+# Build-Schritte für smcroute
+RUN ./autogen.sh && ./configure && make && make install
 
-EXPOSE 2262/udp
+# Erstelle Standard-Konfigurationsordner, kann durch Volume ersetzt werden
+RUN mkdir -p /etc/smcroute
 
-ENTRYPOINT ["smcroute", "-d", "-f", "/etc/smc/smcroute.conf"]
+# Standard Kommando, laufe im Vordergrund mit config-Datei (kann angepasst werden)
+CMD ["smcroute", "-f", "-c", "/etc/smcroute/smcroute.conf"]
